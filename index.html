@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <title>MorseMan</title>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <section class="container-game">
@@ -12,9 +13,16 @@
             </div>
             <div class="container-wordDisplay"></div>
             <div class="container-stats">
-                <p>Corrects:</p>
-                <p>Highest:</p>
+                <p>Corrects: -</p>
+                <p>Highest: -</p>
+            </div>
+            <div class="container-controls">
+                <p id="currMorse"></p>
+                <button id="dotButton">.</button>
+                <button id="dashButton">-</button>
+                <button id="submitButton">Submit</button>
             </div>
         </section>
+        <script src="index.js"></script>
     </body>
 </html>
