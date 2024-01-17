@@ -5,20 +5,22 @@ const dotButton = document.getElementById("dotButton");
 const dashButton = document.getElementById("dashButton");
 const deleteButton = document.getElementById("deleteButton");
 const submitButton = document.getElementById("submitButton");
-const currMorseEl = document.getElementById("currMorse");
 const inputMorseEl = document.getElementById("inputMorse");
 const containerWordDisplay = document.querySelector(".container-wordDisplay");
 
 let playing = true;
 let inputMorse = "";
+let secondary;
+let currWord;
 let currentMorse;
 
 async function init() {
     playing = true;
     inputMorse = "";
-    const currentWord = await getRandomWord();
-    currentMorse = wordToMorse(currentWord);
+    currWord = await getRandomWord();
+    currentMorse = wordToMorse(currWord);
     render(currentMorse);
+    secondary = new Array(currentMorse.length).fill("-");
     console.log(currentMorse);
 }
 
@@ -29,10 +31,7 @@ async function getRandomWord() {
 }
 
 function wordToMorse(str) {
-    return str
-        .split("")
-        .map((char) => alphabetToMorse[char.toLowerCase()])
-        .join(" ");
+    return str.split("").map((char) => alphabetToMorse[char.toLowerCase()]);
 }
 
 function morseToLetter(morse) {
@@ -42,20 +41,30 @@ function morseToLetter(morse) {
         .join("");
 }
 
-function handleGuess() {
-    const correctGuess = currentMorse === inputMorse;
-    if (correctGuess) {
-        const span = document.createElement("span");
-        span.textContent = morseToLetter(currentMorse);
-        containerWordDisplay.appendChild(span);
+function handleGuess(input) {
+    console.log("handling...");
+    for (let i = 0; i < currentMorse.length; i++) {
+        if (input === currentMorse[i]) {
+            secondary[i] = input;
+        } else if (secondary[i] !== "-") {
+            continue;
+        } else {
+            secondary[i] = "-";
+        }
     }
+
+    console.log(secondary);
+
+    const wordHtml = secondary
+        .map((letter) => `<div class="letter">${letter}</div>`)
+        .join("");
+
+    containerWordDisplay.innerHTML = wordHtml;
+    playing = true;
 }
 
 function render(morse) {
-    const wordHtml = morse
-        .split(" ")
-        .map(() => '<span class="letter">-</span>')
-        .join("");
+    const wordHtml = morse.map(() => '<span class="letter">-</span>').join("");
     console.log(wordHtml);
     containerWordDisplay.innerHTML = wordHtml;
 }
@@ -63,7 +72,8 @@ function render(morse) {
 function updateInputMorse(char) {
     if (playing && inputMorse.length < 4) {
         inputMorse += char;
-        currMorseEl.innerHTML = inputMorse;
+        console.log(inputMorse);
+        inputMorseEl.textContent = inputMorse;
     }
 }
 
@@ -73,13 +83,14 @@ dashButton.addEventListener("click", () => updateInputMorse("-"));
 deleteButton.addEventListener("click", () => {
     if (playing && inputMorse.length > 0) {
         inputMorse = inputMorse.slice(0, -1);
-        currMorseEl.innerHTML = inputMorse;
+        inputMorseEl.innerHTML = inputMorse;
     }
 });
 
 submitButton.addEventListener("click", () => {
     if (playing) {
-        const input = inputMorseEl.value;
+        console.log(inputMorseEl.textContent);
+        const input = inputMorseEl.textContent;
         playing = false;
         handleGuess(input);
     }
