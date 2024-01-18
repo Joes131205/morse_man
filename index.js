@@ -8,20 +8,22 @@ const submitButton = document.getElementById("submitButton");
 const inputMorseEl = document.getElementById("inputMorse");
 const containerWordDisplay = document.querySelector(".container-wordDisplay");
 
-let playing = true;
+let playing = false;
 let inputMorse = "";
 let secondary;
 let currWord;
 let currentMorse;
 
+let lives = 5;
+
 async function init() {
-    playing = true;
     inputMorse = "";
     currWord = await getRandomWord();
     currentMorse = wordToMorse(currWord);
     render(currentMorse);
-    secondary = new Array(currentMorse.length).fill("-");
+    secondary = new Array(currentMorse.length).fill("?");
     console.log(currentMorse);
+    playing = true;
 }
 
 async function getRandomWord() {
@@ -43,28 +45,63 @@ function morseToLetter(morse) {
 
 function handleGuess(input) {
     console.log("handling...");
+    let foundDupe = false;
+    let foundAny = false;
+
     for (let i = 0; i < currentMorse.length; i++) {
         if (input === currentMorse[i]) {
-            secondary[i] = input;
-        } else if (secondary[i] !== "-") {
-            continue;
-        } else {
-            secondary[i] = "-";
+            foundAny = true;
+            if (secondary[i] !== "?") {
+                console.log("already same!");
+                foundDupe = true;
+                break;
+            } else {
+                secondary[i] = input;
+            }
+        }
+    }
+
+    if (!foundAny || foundDupe) {
+        lives--;
+        console.log(lives);
+        if (lives === 0) {
+            alert("Game Over!");
+            playing = false;
+            return;
         }
     }
 
     console.log(secondary);
 
     const wordHtml = secondary
-        .map((letter) => `<div class="letter">${letter}</div>`)
-        .join("");
+        .map((letter) => {
+            const span = document.createElement("span");
+            span.classList.add("letter");
+
+            if (letter !== "?") {
+                if (span.classList.contains("new")) {
+                    span.classList.remove("new");
+                }
+                span.classList.add("new");
+            }
+
+            span.textContent = letter;
+            return span.outerHTML;
+        })
+        .join(" ");
+
+    console.log(wordHtml);
+
+    if (secondary.every((item) => item !== "?")) {
+        handleWin();
+    }
 
     containerWordDisplay.innerHTML = wordHtml;
     playing = true;
 }
 
 function render(morse) {
-    const wordHtml = morse.map(() => '<span class="letter">-</span>').join("");
+    const wordHtml = morse.map(() => '<span class="letter">?</span>').join(" ");
     console.log(wordHtml);
     containerWordDisplay.innerHTML = wordHtml;
 }
