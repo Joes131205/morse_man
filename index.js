@@ -6,6 +6,8 @@ const dashButton = document.getElementById("dashButton");
 const deleteButton = document.getElementById("deleteButton");
 const submitButton = document.getElementById("submitButton");
 const inputMorseEl = document.getElementById("inputMorse");
+const liveLeftEl = document.getElementById("liveLeft");
+
 const containerWordDisplay = document.querySelector(".container-wordDisplay");
 
 let playing = false;
@@ -77,14 +79,6 @@ function handleGuess(input) {
         .map((letter) => {
             const span = document.createElement("span");
             span.classList.add("letter");
-
-            if (letter !== "?") {
-                if (span.classList.contains("new")) {
-                    span.classList.remove("new");
-                }
-                span.classList.add("new");
-            }
-
             span.textContent = letter;
             return span.outerHTML;
         })

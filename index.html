@@ -8,22 +8,19 @@
     </head>
     <body>
         <section class="container-game">
-            <div class="container-lives">
-                <p>Lives Left: -</p>
-            </div>
             <div class="container-wordDisplay"></div>
-
+            <p id="inputMorse"></p>
+            <div class="container-controls">
+                <button id="dotButton">.</button>
+                <button id="dashButton">-</button>
+                <button id="submitButton">Submit</button>
+                <button id="deleteButton">Delete</button>
+            </div>
             <div class="container-stats">
+                <p id="liveLeft">Lives left = 5</p>
                 <p id="answer"></p>
                 <p>Corrects: -</p>
                 <p>Highest: -</p>
-            </div>
-            <div class="container-controls">
-                <p id="inputMorse"></p>
-                <button id="dotButton">.</button>
-                <button id="dashButton">-</button>
-                <button id="deleteButton">Delete</button>
-                <button id="submitButton">Submit</button>
             </div>
         </section>
         <script src="index.js" type="module"></script>

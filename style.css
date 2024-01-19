@@ -1,35 +1,79 @@
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: grey;
+    text-align: center;
+    margin: 0;
+}
+.container-game {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.container-controls {
+    background-color: rgb(0, 0, 0);
+    width: 50rem;
+    height: 10rem;
+    border: 10px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 #dotButton,
 #dashButton {
-    padding: 2rem 5rem;
-    font-size: xx-large;
+    font-size: 30px;
+    font-weight: bolder;
+    padding: 3rem 6rem;
 }
-#inputMorse,
-.letter {
-    font-size: xx-large;
+#deleteButton {
+    padding: 3rem;
+}
+
+#submitButton {
+    padding: 3rem;
 }
 .container-wordDisplay {
-    display: flex;
-    gap: 1rem;
-}
-.letter {
+    width: 50rem;
+    height: 30rem;
+    border: 10px solid white;
     background-color: black;
     color: white;
-    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    gap: 30px;
 }
 
-.new {
-    position: relative;
-    animation: hoverUp 2s;
+#inputMorse {
+    width: 15rem;
+    height: 5rem;
+    background-color: black;
+    color: white;
+    border: 5px solid white;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-size: x-large;
 }
 
-@keyframes hoverUp {
-    0% {
-        transform: translateY(0px) !important;
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-    100% {
-        transform: translateY(0px) !important;
-    }
+.container-stats {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 20rem;
+    height: 5rem;
+    background-color: black;
+    color: white;
+    border: 5px solid white;
 }
