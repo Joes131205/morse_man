@@ -67,7 +67,7 @@ body {
 }
 button:active {
     transition: 0.2s;
-    transform: translateY(2%);
+    transform: translateY(5%);
 }
 button {
     cursor: pointer;
@@ -81,13 +81,15 @@ button {
     width: 50rem;
     height: 30rem;
     border: 10px solid white;
-    background-color: black;
+    background-color: rgb(12, 12, 12);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3rem;
     gap: 30px;
+    box-shadow: inset 0 0 50px 20px black;
+    flex-wrap: wrap;
 }
 
 #inputMorse {
@@ -114,4 +116,27 @@ button {
     background-color: black;
     color: white;
     border: 5px solid white;
+}
+#liveLeft {
+    color: red;
+}
+#corrects {
+    color: green;
+}
+
+.guess {
+    background: url("./757C.gif") !important;
+    color: transparent !important;
+}
+
+#loser {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    color: white;
+    background-color: rgb(41, 0, 0);
 }

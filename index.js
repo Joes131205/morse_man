@@ -7,6 +7,8 @@ const deleteButton = document.getElementById("deleteButton");
 const submitButton = document.getElementById("submitButton");
 const inputMorseEl = document.getElementById("inputMorse");
 const liveLeftEl = document.getElementById("liveLeft");
+const correctsEl = document.getElementById("corrects");
+const loserEl = document.getElementById("loser");
 
 const containerWordDisplay = document.querySelector(".container-wordDisplay");
 
@@ -17,8 +19,11 @@ let currWord;
 let currentMorse;
 
 let lives = 5;
-
+let corrects = 0;
 async function init() {
+    loserEl.style.display = "none";
+    lives = 5;
+    liveLeftEl.innerHTML = `&#9829 ${lives}`;
     inputMorse = "";
     currWord = await getRandomWord();
     currentMorse = wordToMorse(currWord);
@@ -38,15 +43,10 @@ function wordToMorse(str) {
     return str.split("").map((char) => alphabetToMorse[char.toLowerCase()]);
 }
 
-function morseToLetter(morse) {
-    return morse
-        .split(" ")
-        .map((code) => morseToAlphabet[code])
-        .join("");
-}
-
 function handleGuess(input) {
-    console.log("handling...");
+    containerWordDisplay.classList.add("guess");
+    const staticAudio = new Audio("./static-pixabay.mp3");
+    staticAudio.play();
     let foundDupe = false;
     let foundAny = false;
 
@@ -54,7 +54,6 @@ function handleGuess(input) {
         if (input === currentMorse[i]) {
             foundAny = true;
             if (secondary[i] !== "?") {
-                console.log("already same!");
                 foundDupe = true;
                 break;
             } else {
@@ -63,15 +62,29 @@ function handleGuess(input) {
         }
     }
 
-    if (!foundAny || foundDupe) {
-        lives--;
-        console.log(lives);
-        if (lives === 0) {
-            alert("Game Over!");
-            playing = false;
-            return;
+    setTimeout(() => {
+        staticAudio.pause();
+        staticAudio.currentTime = 0;
+        containerWordDisplay.classList.remove("guess");
+
+        if (!foundAny || foundDupe) {
+            lives--;
+            liveLeftEl.innerHTML = `&#9829 ${lives}`;
+
+            console.log(lives);
+            if (lives === 0) {
+                loserEl.style.display = "block";
+                loserEl.innerHTML = `
+                <p>Actual morse: ${currentMorse}</p>
+                <p>Actual word: ${currWord}</p>
+                `;
+
+                playing = false;
+                return;
+            }
         }
-    }
+        playing = true;
+    }, 1000);
 
     console.log(secondary);
 
@@ -84,16 +97,20 @@ function handleGuess(input) {
         })
         .join(" ");
 
-    console.log(wordHtml);
+    containerWordDisplay.innerHTML = wordHtml;
 
     if (secondary.every((item) => item !== "?")) {
         handleWin();
+        return;
     }
-
-    containerWordDisplay.innerHTML = wordHtml;
-    playing = true;
 }
-
+function handleWin() {
+    playing = false;
+    corrects++;
+    correctsEl.innerHTML = `&#10003 ${corrects}`;
+    containerWordDisplay.innerHTML += `<span>Actual word: ${currWord}</span>`;
+    console.log(containerWordDisplay);
+}
 function render(morse) {
     const wordHtml = morse.map(() => '<span class="letter">?</span>').join(" ");
     console.log(wordHtml);
@@ -102,6 +119,13 @@ function render(morse) {
 
 function updateInputMorse(char) {
     if (playing && inputMorse.length < 4) {
+        if (char === ".") {
+            const dot = new Audio("./dot.wav");
+            dot.play();
+        } else {
+            const dash = new Audio("./dash.wav");
+            dash.play();
+        }
         inputMorse += char;
         console.log(inputMorse);
         inputMorseEl.textContent = inputMorse;
