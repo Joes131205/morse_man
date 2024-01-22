@@ -43,7 +43,6 @@ async function init() {
     currentMorse = wordToMorse(currWord);
     render(currentMorse);
     secondary = new Array(currentMorse.length).fill("?");
-    console.log(currentMorse);
     playing = true;
 }
 
