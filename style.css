@@ -1,7 +1,8 @@
 @font-face {
     font-family: "Pixel Acer Mono";
-    src: url("./Px437_Acer710_Mono.ttf");
+    src: url("./assets/fonts/Px437_Acer710_Mono.ttf");
 }
+
 body {
     height: 100vh;
     display: flex;
@@ -12,6 +13,7 @@ body {
     margin: 0;
     font-family: "Pixel Acer Mono", monospace;
 }
+
 .container-game {
     flex-direction: column;
     display: flex;
@@ -31,52 +33,47 @@ body {
     justify-content: center;
     gap: 50px;
 }
-#dotButton,
-#dashButton {
-    font-size: 30px;
-    font-weight: bolder;
-    padding: 3rem 6rem;
-    border: none;
-    border-radius: 0px;
 
+#dotButton,
+#dashButton,
+#submitButton,
+#deleteButton {
+    font-size: large;
+    font-weight: bolder;
+    border: none;
     color: white;
 }
+
 #dotButton,
 #dashButton {
+    padding: 3rem 6rem;
     background: linear-gradient(145deg, #0e0e0e, #0c0c0c);
     box-shadow: 5px 5px 11px #050505, -5px -5px 11px #151515;
 }
 
 #submitButton {
-    font-size: large;
-    font-weight: bolder;
+    padding: 3rem;
     background: linear-gradient(145deg, #0e0e0e, #0c0c0c);
     box-shadow: 5px 5px 11px #050505, -5px -5px 11px #151515;
-    border: none;
-    color: white;
 }
+
 #deleteButton {
-    border: none;
-    border-radius: 0px;
+    padding: 3rem 6rem;
     background: linear-gradient(145deg, #1b0000, #170000);
     box-shadow: 5px 5px 11px #0a0000, -5px -5px 11px #280000;
-    color: white;
-    font-weight: bolder;
     font-size: xx-large;
-    padding: 3rem 6rem;
 }
+
 button:active {
     transition: 0.2s;
     transform: translateY(5%);
 }
+
 button {
     cursor: pointer;
     transition: 0.2s;
 }
 
-#submitButton {
-    padding: 3rem;
-}
 .container-wordDisplay {
     width: 50rem;
     height: 30rem;
@@ -117,15 +114,17 @@ button {
     color: white;
     border: 5px solid white;
 }
+
 #liveLeft {
     color: red;
 }
+
 #corrects {
     color: green;
 }
 
 .guess {
-    background: url("./757C.gif") !important;
+    background: url("./assets/videos/757C.gif") !important;
     color: transparent !important;
 }
 
@@ -134,9 +133,36 @@ button {
     position: absolute;
     width: 100%;
     height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: xx-large;
     flex-direction: column;
     align-items: center;
     justify-self: center;
     color: white;
     background-color: rgb(41, 0, 0);
+}
+
+#retry {
+    font-size: xx-large;
+    padding: 2rem 5rem;
+    background-color: black;
+    color: white;
+    font-family: "Pixel Acer Mono";
+    border: 10px solid white;
+}
+
+#retry:hover {
+    background: url("./assets/videos/757C.gif");
+    filter: blur(0.5);
+}
+
+#damaged {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: 2s;
+    background-color: rgba(124, 0, 0, 0.733);
 }

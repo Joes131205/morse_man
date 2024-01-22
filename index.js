@@ -1,30 +1,44 @@
-import alphabetToMorse from "./alphabetToMorse.js";
-import morseToAlphabet from "./morseToAlphabet.js";
+import alphabetToMorse from "./assets/js/alphabetToMorse.js";
 
 const dotButton = document.getElementById("dotButton");
 const dashButton = document.getElementById("dashButton");
+
 const deleteButton = document.getElementById("deleteButton");
 const submitButton = document.getElementById("submitButton");
+const retryButton = document.getElementById("retry");
+
 const inputMorseEl = document.getElementById("inputMorse");
+
 const liveLeftEl = document.getElementById("liveLeft");
 const correctsEl = document.getElementById("corrects");
+
+const damagedEl = document.getElementById("damaged");
 const loserEl = document.getElementById("loser");
+
+const actualMorseEl = document.getElementById("actualMorse");
+const actualWordEl = document.getElementById("actualWord");
 
 const containerWordDisplay = document.querySelector(".container-wordDisplay");
 
 let playing = false;
+
 let inputMorse = "";
 let secondary;
+
 let currWord;
 let currentMorse;
 
 let lives = 5;
 let corrects = 0;
+
 async function init() {
+    containerWordDisplay.innerHTML = "";
+    damagedEl.style.display = "none";
     loserEl.style.display = "none";
     lives = 5;
     liveLeftEl.innerHTML = `&#9829 ${lives}`;
     inputMorse = "";
+    inputMorseEl.textContent = "";
     currWord = await getRandomWord();
     currentMorse = wordToMorse(currWord);
     render(currentMorse);
@@ -45,7 +59,7 @@ function wordToMorse(str) {
 
 function handleGuess(input) {
     containerWordDisplay.classList.add("guess");
-    const staticAudio = new Audio("./static-pixabay.mp3");
+    const staticAudio = new Audio("./assets/sounds/static-pixabay.mp3");
     staticAudio.play();
     let foundDupe = false;
     let foundAny = false;
@@ -70,23 +84,20 @@ function handleGuess(input) {
         if (!foundAny || foundDupe) {
             lives--;
             liveLeftEl.innerHTML = `&#9829 ${lives}`;
-
-            console.log(lives);
+            damagedEl.style.display = "block";
             if (lives === 0) {
-                loserEl.style.display = "block";
-                loserEl.innerHTML = `
-                <p>Actual morse: ${currentMorse}</p>
-                <p>Actual word: ${currWord}</p>
-                `;
-
+                loserEl.style.display = "flex";
+                actualMorseEl.textContent = currentMorse.join(" ");
+                actualWordEl.textContent = currWord;
                 playing = false;
                 return;
             }
         }
         playing = true;
+        setTimeout(() => {
+            damagedEl.style.display = "none";
+        }, 250);
     }, 1000);
-
-    console.log(secondary);
 
     const wordHtml = secondary
         .map((letter) => {
@@ -104,30 +115,32 @@ function handleGuess(input) {
         return;
     }
 }
+
 function handleWin() {
     playing = false;
-    corrects++;
-    correctsEl.innerHTML = `&#10003 ${corrects}`;
     containerWordDisplay.innerHTML += `<span>Actual word: ${currWord}</span>`;
-    console.log(containerWordDisplay);
+    setTimeout(() => {
+        init();
+        corrects++;
+        correctsEl.innerHTML = `&#10003 ${corrects}`;
+    }, 5000);
 }
+
 function render(morse) {
     const wordHtml = morse.map(() => '<span class="letter">?</span>').join(" ");
-    console.log(wordHtml);
     containerWordDisplay.innerHTML = wordHtml;
 }
 
 function updateInputMorse(char) {
     if (playing && inputMorse.length < 4) {
         if (char === ".") {
-            const dot = new Audio("./dot.wav");
+            const dot = new Audio("./assets/sounds/dot.wav");
             dot.play();
         } else {
-            const dash = new Audio("./dash.wav");
+            const dash = new Audio("./assets/sounds/dash.wav");
             dash.play();
         }
         inputMorse += char;
-        console.log(inputMorse);
         inputMorseEl.textContent = inputMorse;
     }
 }
@@ -144,11 +157,14 @@ deleteButton.addEventListener("click", () => {
 
 submitButton.addEventListener("click", () => {
     if (playing) {
-        console.log(inputMorseEl.textContent);
         const input = inputMorseEl.textContent;
         playing = false;
         handleGuess(input);
     }
+});
+
+retryButton.addEventListener("click", function () {
+    init();
 });
 
 init();
